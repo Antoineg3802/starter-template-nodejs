@@ -20,7 +20,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 app.listen(8080, function () {
-	console.log('API started on : http://localhost:' + 8080);
+	console.log('API started on : http://localhost:' + 8000);
 });
 
 module.exports = app;
