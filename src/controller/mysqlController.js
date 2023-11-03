@@ -54,7 +54,7 @@ function verifyAccount(email) {
     })
 }
 
-function registerUser(firstname, lastname, mail, password, roleId, phone) {
+function registerUser(firstname, lastname, mail, password, phone) {
     return new Promise((resolve, reject) => {
         doUserExistInDb(mail)
             .then((isUserInDb) => {
@@ -65,7 +65,7 @@ function registerUser(firstname, lastname, mail, password, roleId, phone) {
                         message: "User already exist with email '" + mail + "'"
                     })
                 } else {
-                    SQLRequest('INSERT INTO `users` (`firstname`, `lastname`, `mail`, `password`, `role_id`, `phone`) VALUES ("' + firstname + '","' + lastname + '","' + mail + '","' + password + '",' + roleId + ',"' + phone + '");')
+                    SQLRequest('INSERT INTO `users` (`firstname`, `lastname`, `mail`, `password`, `phone`) VALUES ("' + firstname + '","' + lastname + '","' + mail + '","' + password + '","' + phone + '");')
                         .then((request) => {
                             if (request.affectedRows) {
                                 resolve({

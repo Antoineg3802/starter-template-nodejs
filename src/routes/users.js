@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var userController = require('../src/controller/userController');
+var userController = require('../controller/userController');
 const NodeCache = require('node-cache');
 const cache = new NodeCache();
 
@@ -84,7 +84,7 @@ router.post('/login', (req, res) => {
 
 router.post('/register/', (req, res) => {
 	if (req.body.firstname && req.body.lastname && req.body.email && req.body.password && req.body.phone) {
-		userController.registerUser(req.body.firstname, req.body.lastname, req.body.email, req.body.password, req.body.phone, req.body.roleId)
+		userController.registerUser(req.body.firstname, req.body.lastname, req.body.email, req.body.password, req.body.phone)
 			.then((objectResponse) => {
 				if (!objectResponse.error) {
 					res.status(201).send({ token: objectResponse.token, maxAge: 259560000 })
