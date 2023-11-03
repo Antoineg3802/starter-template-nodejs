@@ -123,11 +123,17 @@ function getCurrentUser(token){
     })
 }
 
-function deleteUser(userId){
+function deleteUser(token){
     return new Promise((resolve)=>{
-        mysqlController.deleteUser(userId)
-        .then((response)=>{
-            resolve(response[0])
+        jwt.verify(token, process.env.SHA_KEY,(err, decoded)=> {
+            if (err) {
+                resolve({error: true, message: 'Invalid JWT token' });
+            }else{
+                mysqlController.deleteUser(decoded.user_id)
+                    .then((response)=>{
+                        resolve(response)
+                    })
+            }
         })
     })
 }

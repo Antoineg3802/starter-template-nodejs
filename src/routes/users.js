@@ -110,13 +110,30 @@ router.patch('/modify/:userId', (req, res) => {
 		})
 })
 
-router.delete('/delete/:userId', (req, res) => {
-	let userId = req.params.userId
-
-	userController.deleteUser(userId)
-		.then(result => {
-			res.send(result)
+router.delete('/delete/', (req, res) => {
+	if (req.headers.authorization == undefined){
+		res.status(400).send({
+			error: true,
+			message: "Invalid JWT token"
 		})
+	}else{
+		let authorization = req.headers.authorization.split(' ')
+		if (authorization[0] == 'Bearer') {
+			userController.deleteUser(authorization[1])
+				.then(result => {
+					if (result.error != undefined){
+						res.status(400).send(result)
+					}else{
+						res.status(202).send()
+					}
+				})
+		}else {
+			res.status(400).send({
+				error: true,
+				message: "Invalid JWT token"
+			})
+		}	
+	}
 })
 
 module.exports = router;

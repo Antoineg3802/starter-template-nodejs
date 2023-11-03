@@ -148,7 +148,6 @@ function deleteUser(userId) {
         } else {
             resolve({
                 error: true,
-                status: 404,
                 message: 'User not found'
             })
         }
