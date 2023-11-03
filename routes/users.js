@@ -1,11 +1,21 @@
 var express = require('express');
 var router = express.Router();
 var userController = require('../src/controller/userController');
+const NodeCache = require('node-cache');
+const cache = new NodeCache();
 
 /* GET users listing. */
 router.get('/', function (req, res) {
+	const cacheKey = req.originalUrl || req.url;
+	const cachedData = cache.get(cacheKey);
+
+	if (cachedData){
+		return res.status(304).send(cachedData);
+	}
+
 	userController.getAllUsers()
-		.then((users) => {
+	.then((users) => {
+			cache.set(cacheKey, users, 20);
 			res.status(200).send(users);
 		}).catch((err) => {
 			res.status(500).send(err.message)

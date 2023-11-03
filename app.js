@@ -4,6 +4,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var cors = require('cors')
 
+require('dotenv').config()
+
 var app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -19,8 +21,10 @@ app.use(cors())
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-app.listen(8080, function () {
-	console.log('API started on : http://localhost:' + 8000);
+const port = process.env.APP_PORT || 8080;
+
+app.listen(port, function () {
+	console.log('API started on : http://localhost:' + port);
 });
 
 module.exports = app;
