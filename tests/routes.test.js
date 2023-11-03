@@ -6,7 +6,7 @@ const testUserData = {
     lastname: 'Doe',
     email: 'john.doe@example.com',
     password: 'password123',
-    phone: '1234567890',
+    phone: '1234567890',    
 };
 
 let authToken = '';
@@ -92,38 +92,47 @@ describe('POST Login', () => {
 
 });
 
-// describe('GET /users/currentUser', () => {
-//     it('responds with JSON containing current user data', async () => {
-//         if (!authToken) {
-//             throw new Error('Authentication token not available');
-//         }
+describe('GET /users/currentUser', () => {
+    it('responds with JSON containing current user data', async () => {
+        const response = await request(app)
+            .get('/users/currentUser')
+            .set('Authorization', `Bearer ${authToken}`);
 
-//         const response = await request(app)
-//             .get('/users/currentUser')
-//             .set('Authorization', `Bearer ${authToken}`);
+        expect(response.status).toBe(200);
+        expect(response.body).toBeDefined();
+        // Ajoutez d'autres assertions pour vérifier les propriétés de la réponse si nécessaire
+    });
+    it('respond whitout token', async () => {
+        const response = await request(app)
+            .get('/users/currentUser');
 
-//         expect(response.status).toBe(200);
-//         expect(response.body).toBeDefined();
-//         // Ajoutez d'autres assertions pour vérifier les propriétés de la réponse si nécessaire
-//     });
-// });
+        expect(response.status).toBe(401);
+        expect(response.body).toBeDefined();
+    });
+});
 
-// describe('GET /users/one/:id', () => {
-//     it('responds with JSON containing a specific user data', async () => {
-//         if (!authToken) {
-//             throw new Error('Authentication token not available');
-//         }
 
-//         const userId = 1; // Remplacez par un ID d'utilisateur valide
-//         const response = await request(app)
-//             .get(`/users/one/${userId}`)
-//             .set('Authorization', `Bearer ${authToken}`);
+describe('GET /users/one/:id', () => {
+    it('responds with JSON containing a specific user data', async () => {
+        const userId = 35; // Remplacez par un ID d'utilisateur valide
+        const response = await request(app)
+            .get(`/users/one/${userId}`)
+            .set('Authorization', `Bearer ${authToken}`);
 
-//         expect(response.status).toBe(200);
-//         expect(response.body).toBeDefined();
-//         // Ajoutez d'autres assertions pour vérifier les propriétés de la réponse si nécessaire
-//     });
-// });
+        expect(response.status).toBe(200);
+        expect(response.body).toBeDefined();
+        // Ajoutez d'autres assertions pour vérifier les propriétés de la réponse si nécessaire
+    });
+    it('reponds not found user', async () => {  
+        const userId = 10000;
+        const response = await request(app)
+            .get(`/users/one/${userId}`)
+            .set('Authorization', `Bearer ${authToken}`);
+
+        expect(response.status).toBe(404);
+        expect(response.body).toBeDefined();
+    });
+});
 
 describe('DELETE /users/delete/:userId', () => {
     it('deletes a specific user and responds with JSON', async () => {
@@ -142,6 +151,7 @@ describe('DELETE /users/delete/:userId', () => {
         const response = await request(app)
             .delete(`/users/`)
             .set('Authorization', `Bearer ${authToken}`);
+            console.log(authToken, 'le token deleted')
 
         expect(response.status).toBe(404);
         expect(response.body).toBeDefined();
@@ -154,6 +164,17 @@ describe('DELETE /users/delete/:userId', () => {
             .delete(`/users/`)
 
         expect(response.status).toBe(400);
+        expect(response.body).toBeDefined();
+    });
+
+    it('respond user not found',  () => {
+        console.log(authToken, 'le token nofound');
+        const response =  request(app)
+            .get('/users/currentUser')
+            .set('Authorization', `Bearer ${authToken}`);
+    
+
+        expect(response.status).toBe(404);
         expect(response.body).toBeDefined();
     });
 });

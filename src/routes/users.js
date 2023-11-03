@@ -23,8 +23,13 @@ router.get('/', function (req, res) {
 });
 
 router.get('/currentUser/', function (req, res) {
-	let authorization = req.headers.authorization.split(' ')
-	if (authorization) {
+	if (req.headers.authorization == undefined){
+		res.status(401).send({
+			error: true,
+			message: "Invalid JWT token"
+		})
+	}else {
+		const authorization = req.headers.authorization.split(' ')
 		if (authorization[0] == 'Bearer') {
 			userController.getCurrentUser(authorization[1])
 				.then((response) => {
@@ -36,12 +41,7 @@ router.get('/currentUser/', function (req, res) {
 				message: 'No JWT token submitted'
 			})
 		}
-	} else {
-		res.status(401).send({
-			error: true,
-			message: 'No JWT token submitted'
-		})
-	}
+	} 
 });
 
 router.get('/one/:id', function (req, res) {
