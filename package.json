@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon -e js app.js"
+    "dev": "nodemon -e js app.js",
+    "test": "jest"
   },
   "dependencies": {
     "@faker-js/faker": "^8.0.2",

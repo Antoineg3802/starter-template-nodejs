@@ -110,7 +110,7 @@ router.patch('/modify/:userId', (req, res) => {
 		})
 })
 
-router.delete('/delete/', (req, res) => {
+router.delete('/', (req, res) => {
 	if (req.headers.authorization == undefined){
 		res.status(400).send({
 			error: true,
@@ -122,7 +122,7 @@ router.delete('/delete/', (req, res) => {
 			userController.deleteUser(authorization[1])
 				.then(result => {
 					if (result.error != undefined){
-						res.status(400).send(result)
+						res.status(404).send(result)
 					}else{
 						res.status(202).send()
 					}
