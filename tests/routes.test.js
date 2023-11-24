@@ -151,7 +151,6 @@ describe('DELETE /users/delete/:userId', () => {
         const response = await request(app)
             .delete(`/users/`)
             .set('Authorization', `Bearer ${authToken}`);
-            console.log(authToken, 'le token deleted')
 
         expect(response.status).toBe(404);
         expect(response.body).toBeDefined();
@@ -168,11 +167,9 @@ describe('DELETE /users/delete/:userId', () => {
     });
 
     it('respond user not found',  () => {
-        console.log(authToken, 'le token nofound');
         const response =  request(app)
             .get('/users/currentUser')
             .set('Authorization', `Bearer ${authToken}`);
-    
 
         expect(response.status).toBe(404);
         expect(response.body).toBeDefined();

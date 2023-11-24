@@ -1,27 +1,38 @@
-version: '3.8'
+version: "3"
+
 services:
+  # Database
   db:
-    image: mysql
-    container_name: local_mysqldata
-    restart: always
-    ports:
-      - "3306:3306"
-    environment: 
-      MYSQL_ROOT_PASSWORD: admin
-      MYSQL_DATABASE: db
-      MYSQL_USER: user
-      MYSQL_PASSWORD: admin
+    platform: linux/x86_64
+    image: mysql:5.7
     volumes:
-    - local_mysqldata:/var/lib/mysql
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
+      - db_data:/var/lib/mysql
     restart: always
     ports:
-      - 8080:80
+      - "3008:3306"
     environment:
-      PMA_USER: user
-      PMA_PASSWORD: admin
-      PMA_HOSTS: db
-      PMA_ARBITRARY: 1
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: boiler
+      MYSQL_PASSWORD: template
+    networks:
+      - mysql-phpmyadmin
+
+  # phpmyadmin
+  phpmyadmin:
+    depends_on:
+      - db
+    image: phpmyadmin
+    restart: always
+    ports:
+      - "8091:80"
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: password
+    networks:
+      - mysql-phpmyadmin
+
+networks:
+  mysql-phpmyadmin:
+
 volumes:
-  local_mysqldata: 
+  db_data:
