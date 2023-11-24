@@ -1,25 +1,4 @@
-const { SqlError } = require('mariadb');
-const mysqlModel = require('../models/mysqlModel');
-
-function SQLRequest(query) {
-    return new Promise((resolve) => {
-        mysqlModel.pool.getConnection()
-            .then(conn => {
-                conn.query(query)
-                    .then((rows) => {
-                        resolve(rows);
-                        conn.end();
-                    })
-                    .catch(err => {
-                        //handle error
-                        console.log(err);
-                        conn.end();
-                    })
-            }).catch(err => {
-                console.log('Erreur lors de la connection à la BDD', err)
-            });
-    })
-}
+const {SQLRequest} = require('../models/mysqlModel');
 
 function getAllUsers() {
     return new Promise((resolve, reject) => {

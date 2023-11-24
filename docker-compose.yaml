@@ -13,7 +13,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: boiler
-      MYSQL_PASSWORD: template
+      MYSQL_PASSWORD: root
     networks:
       - mysql-phpmyadmin
 
