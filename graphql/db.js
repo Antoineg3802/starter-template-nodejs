@@ -1,11 +1,12 @@
 const mysql = require('mysql2');
+require('dotenv').config()
 
 const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    port: 3007,
-    password: 'root',
-    database: 'graphql',
+    host: process.env.APP_HOST,
+    user: process.env.DB_USERNAME,
+    port: process.env.DB_PORT,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
 });
 
 connection.connect((err) => {
